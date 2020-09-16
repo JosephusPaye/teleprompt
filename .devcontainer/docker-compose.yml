@@ -1,0 +1,4 @@
+version: '3'
+services:
+  # The service (from docker-compose.yml) to run VS Code in.
+  app: {}

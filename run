@@ -1,0 +1,165 @@
+#!/usr/bin/env bash
+
+# Set default env variables
+export DOCKER_WWWUSER=${DOCKER_WWWUSER:-$UID}
+
+# Source our environment file, for the variables used in docker-compose.yml
+if [ -f .env ]; then
+    source .env
+else
+    printf "Unable to run: create the .env file first.\nRun \`cp .env.example .env\` and update the variables in the .env file.\n"
+    exit 1
+fi
+
+# If there are arguments...
+if [ $# -gt 0 ]; then
+    # Build the services on `./run build`
+    if [ "$1" == "build" ]; then
+        docker-compose build
+
+    # Start the services on `./run start`
+    elif [ "$1" == "start" ]; then
+        docker-compose up -d
+
+    # Stop the services on `./run stop`
+    elif [ "$1" == "stop" ]; then
+        docker-compose down --remove-orphans
+
+    # Show the containers status on `./run status` or `./run ps`
+    elif [ "$1" == "status" ] || [ "$1" == "ps" ]; then
+        docker-compose ps
+
+    # Run `php artisan ...` on `./run art` or `./run artisan ...`
+    elif [ "$1" == "artisan" ] || [ "$1" == "art" ]; then
+        shift 1
+        docker-compose exec \
+            -u teleprompt \
+            app \
+            php artisan "$@"
+
+    # Run `composer ...` on `./run art` or `./run composer ...`
+    elif [ "$1" == "composer" ] || [ "$1" == "comp" ]; then
+        shift 1
+        docker-compose exec \
+            -u teleprompt \
+            app \
+            composer "$@"
+
+    # Run `./vendor/bin/phpunit ...` on `./run test ...` or `./run t`
+    elif [ "$1" == "test" ] || [ "$1" == "t" ]; then
+        shift 1
+        docker-compose exec \
+            -u teleprompt \
+            app \
+            ./vendor/bin/phpunit "$@"
+
+    # Run `./vendor/bin/phpunit --filter ...` on `./run tf ...`
+    elif [ "$1" == "tf" ]; then
+        shift 1
+        docker-compose exec \
+            -u teleprompt \
+            app \
+            ./vendor/bin/phpunit --filter "$@"
+
+    # Run `php artisan tinker` on `./run tinker`
+    elif [ "$1" == "tinker" ]; then
+        docker-compose exec \
+            -u teleprompt \
+            app \
+            php artisan tinker
+
+    # Run `php artisan dump-server` on `./run dump-server ...`
+    elif [ "$1" == "dump-server" ] || [ "$1" == "ds" ]; then
+        docker-compose exec \
+            -u teleprompt \
+            app \
+            php artisan dump-server
+
+    # Enable XDebug on `./run debug`
+    elif [ "$1" == "debug" ] || [ "$1" == "debug:on" ]; then
+        # Find and replace '0 # Disable Xdebug' with '1 # Enable XDebug' in the php config
+        docker-compose exec \
+            app \
+            bash -c "sudo sed -i 's/0 # Disable XDebug/1 # Enable XDebug/g' /etc/php/7.4/fpm/conf.d/teleprompt.php.ini && printf 'XDebug enabled, restarting servers...\n' && supervisorctl restart php-fpm nginx"
+
+    # Disable XDebug on `./run nodebug`
+    elif [ "$1" == "nodebug" ] || [ "$1" == "debug:off" ]; then
+        # Find and replace '0 # Enable Xdebug' with '0 # Disable XDebug' in the php config
+        docker-compose exec \
+            app \
+            bash -c "sed -i 's/1 # Enable XDebug/0 # Disable XDebug/g' /etc/php/7.4/fpm/conf.d/teleprompt.php.ini && printf 'XDebug disabled, restarting servers...\n' && supervisorctl restart php-fpm nginx"
+
+    # Restart php-fpm and nginx on `./run restart-server`
+    elif [ "$1" == "restart-server" ] || [ "$1" == "rs" ]; then
+        # Find and replace '0 # Enable Xdebug' with '0 # Disable XDebug' in the php config
+        docker-compose exec \
+            app \
+            bash -c "printf 'Restarting php-fpm and nginx...\n' && supervisorctl restart php-fpm nginx"
+
+    # Run `npm ...` on `./run npm ...`
+    elif [ "$1" == "npm" ]; then
+        shift 1
+        docker-compose exec \
+            -u teleprompt \
+            app \
+            npm "$@"
+
+    # Run `yarn ...` on `./run yarn ...`
+    elif [ "$1" == "yarn" ]; then
+        shift 1
+        docker-compose exec \
+            -u teleprompt \
+            app \
+            yarn "$@"
+
+    # Run `mysql` on `./run mysql`
+    elif [ "$1" == "mysql" ]; then
+        docker-compose exec \
+            mysql \
+            bash -c "MYSQL_PWD=$DB_PASSWORD mysql -u $DB_USERNAME $DB_DATABASE"
+
+    # Run `mysqldump` on `./run dump`
+    elif [ "$1" == "dump" ]; then
+        docker-compose exec \
+            mysql \
+            bash -c "MYSQL_PWD=$DB_PASSWORD mysqldump -u $DB_USERNAME --default-character-set=utf8mb4 $DB_DATABASE"
+
+    # Run `redis-cli` on `./run redis`
+    elif [ "$1" == "redis" ]; then
+        docker-compose exec \
+            redis \
+            redis-cli -h redis -p 6379
+
+    # Run `docker-compose logs` on `./run logs`
+    elif [ "$1" == "logs" ]; then
+        docker-compose logs -f
+
+    # On `./run shell`, open a new bash shell into the given service container
+    # e.g.: ./run shell app
+    # e.g.: ./run shell mysql
+    elif [ "$1" == "shell" ]; then
+        shift 1
+
+        # Default to the app service if no service is specified
+        if [ $# -eq 0 ]; then
+            docker-compose exec \
+                -u teleprompt \
+                app \
+                bash
+        # Otherwise run `docker-compose run` with the arguments
+        else
+            docker-compose run --rm \
+                $1 \
+                bash
+        fi
+
+    # Otherwise run `docker-compose ...` on `./run ...`
+    else
+        docker-compose "$@"
+    fi
+
+# If there are no arguments...
+else
+    # List our running services
+    docker-compose ps
+fi
