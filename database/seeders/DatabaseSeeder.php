@@ -2,6 +2,8 @@
 
 namespace Database\Seeders;
 
+use App\Models\Presentation;
+use App\Models\SlideImage;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -13,6 +15,14 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        // User::factory(10)->create();
+        $presentation = Presentation::factory()->create([
+            'code' => 'sample',
+        ]);
+
+        for ($i = 0; $i < 11; $i++) {
+            SlideImage::factory()->create([
+                'presentation_id' => $presentation->id,
+            ]);
+        }
     }
 }

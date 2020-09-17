@@ -4,13 +4,13 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Teleprompt</title>
-    <link rel="stylesheet" href="{{ str_replace('0.0.0.0', 'localhost', mix('css/app.css')) }}">
+    <link rel="icon" id="emojicon" href="/favicon.ico" />
     <script>
-        window.telepromptData = @json($vue_data);
+        window.backendData = @json($backendData);
     </script>
 </head>
 <body>
     <div id="app"></div>
-    <script src="{{ str_replace('0.0.0.0', 'localhost', mix('js/app.js')) }}"></script>
+    <script src="{{ str_replace('0.0.0.0', '192.168.1.10', mix('js/app.js')) }}"></script>
 </body>
 </html>

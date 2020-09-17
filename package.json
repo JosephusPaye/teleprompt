@@ -4,9 +4,10 @@
         "dev": "cross-env NODE_ENV=development node_modules/webpack/bin/webpack.js --progress --hide-modules --watch --config=node_modules/laravel-mix/setup/webpack.config.js",
         "hot": "cross-env NODE_ENV=development node_modules/webpack-dev-server/bin/webpack-dev-server.js --inline --hot --disable-host-check --config=node_modules/laravel-mix/setup/webpack.config.js",
         "build": "cross-env NODE_ENV=production node_modules/webpack/bin/webpack.js --no-progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js",
-        "format" : "prettier *.js resources/**/*.js resources/**/*.css resources/**/*.vue --write"
+        "format": "prettier *.js resources/**/*.js resources/**/*.vue --write"
     },
     "dependencies": {
+        "emojicon": "^0.1.1",
         "tailwindcss": "^1.8.10",
         "vue": "^2.6.12"
     },
@@ -20,7 +21,7 @@
         "vue-template-compiler": "^2.6.12"
     },
     "prettier": {
-        "tabWidth": 4,
+        "tabWidth": 2,
         "singleQuote": true
     }
 }
