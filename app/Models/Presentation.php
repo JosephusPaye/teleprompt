@@ -23,6 +23,16 @@ class Presentation extends Model
     protected $fillable = [
         'title',
         'code',
+        'settings'
+    ];
+
+    /**
+     * The attributes that should be cast.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'settings' => 'array',
     ];
 
     /**
@@ -31,5 +41,23 @@ class Presentation extends Model
     public function slides()
     {
         return $this->hasMany(SlideImage::class);
+    }
+
+    /**
+     * The "booted" method of the model.
+     *
+     * @return void
+     */
+    protected static function booted()
+    {
+        static::created(function ($presentation) {
+            if ($presentation->settings == null) {
+                $presentation->settings = json_encode([
+                    'mirrorVertically' => false,
+                    'mirrorHorizontally' => false,
+                ]);
+                $presentation->save();
+            }
+        });
     }
 }

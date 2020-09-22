@@ -28,7 +28,7 @@ class SlideImageFactory extends Factory
             'presentation_id' => Presentation::factory(),
             'order' => $index,
             'thumbnail_url' => null,
-            'path' => 'files/sample/slide-' . str_pad($index++ % 12, 2, '0', STR_PAD_LEFT) . '.png',
+            'path' => 'slides/sample/slide-' . str_pad($index++ % 12, 2, '0', STR_PAD_LEFT) . '.png',
         ];
     }
 }
