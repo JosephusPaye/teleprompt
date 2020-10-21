@@ -3,7 +3,6 @@
 namespace Database\Seeders;
 
 use App\Models\Presentation;
-use App\Models\SlideImage;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -15,14 +14,10 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        $presentation = Presentation::factory()->create([
+        Presentation::factory()->create([
             'code' => 'sample',
+            'title' => 'Of Mice and Men',
+            'content' => file_get_contents(__DIR__ . '/of-mice-and-men.txt'),
         ]);
-
-        for ($i = 0; $i < 11; $i++) {
-            SlideImage::factory()->create([
-                'presentation_id' => $presentation->id,
-            ]);
-        }
     }
 }

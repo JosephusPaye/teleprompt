@@ -1,8 +1,5 @@
 <template>
-  <Button
-    :selected="value"
-    @click="$emit('update:value', !value)"
-  >
+  <Button :selected="value" @click="$emit('update:value', !value)">
     <slot></slot>
   </Button>
 </template>
@@ -13,7 +10,7 @@ import Button from './Button.vue';
 export default {
   name: 'ToggleButton',
   components: {
-      Button,
+    Button,
   },
   props: {
     value: null,

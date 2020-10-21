@@ -11,6 +11,6 @@
 </head>
 <body>
     <div id="app"></div>
-    <script src="{{ str_replace('0.0.0.0', '192.168.1.10', mix('js/app.js')) }}"></script>
+    <script src="{{ str_replace('0.0.0.0', env('DOCKER_MIX_HOT_RELOAD_IP'), mix('js/app.js')) }}"></script>
 </body>
 </html>

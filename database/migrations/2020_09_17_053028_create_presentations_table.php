@@ -18,6 +18,7 @@ class CreatePresentationsTable extends Migration
             $table->string('title');
             $table->string('code')->index();
             $table->text('settings')->nullable();
+            $table->text('content')->nullable();
             $table->timestamps();
         });
     }

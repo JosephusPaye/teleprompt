@@ -25,6 +25,7 @@ class PresentationFactory extends Factory
         return [
             'title' => $this->faker->sentence(),
             'code' => Str::random(6),
+            'content' => $this->faker->paragraphs(),
             'settings' => json_encode([
                 'mirrorVertically' => $this->faker->boolean(),
                 'mirrorHorizontally' => $this->faker->boolean(),

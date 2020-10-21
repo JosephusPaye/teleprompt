@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use App\Models\SlideImage;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -23,25 +22,9 @@ class Presentation extends Model
     protected $fillable = [
         'title',
         'code',
-        'settings'
+        'settings',
+        'content'
     ];
-
-    /**
-     * The attributes that should be cast.
-     *
-     * @var array
-     */
-    protected $casts = [
-        'settings' => 'array',
-    ];
-
-    /**
-     * Get the slides for this presentation.
-     */
-    public function slides()
-    {
-        return $this->hasMany(SlideImage::class);
-    }
 
     /**
      * The "booted" method of the model.
@@ -59,5 +42,12 @@ class Presentation extends Model
                 $presentation->save();
             }
         });
+    }
+
+    /**
+     * Get the settings attribute.
+     */
+    public function getSettingsAttribute($value) {
+        return json_decode($value ?? []);
     }
 }
