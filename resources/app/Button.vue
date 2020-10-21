@@ -1,12 +1,14 @@
 <template>
-  <button
+  <component
     class="button rounded font-semibold px-6 h-12 leading-none py-2 select-none inline-flex items-center justify-center"
     :class="{ 'is-selected': selected, 'opacity-50': disabled }"
     @click="$emit('click', $event)"
     :disabled="disabled"
+    :is="href ? 'a' : 'button'"
+    :href="href"
   >
     <slot></slot>
-  </button>
+  </component>
 </template>
 
 <script>
@@ -15,6 +17,7 @@ export default {
   props: {
     disabled: Boolean,
     selected: Boolean,
+    href: String,
   },
 };
 </script>

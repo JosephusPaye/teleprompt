@@ -7,9 +7,7 @@
         No presentation matches code "{{ code }}"
       </div>
       <div class="mt-8 text-center">
-        <Button class="px-16" @click="$emit('navigate', 'start')"
-          >Go Home</Button
-        >
+        <Button class="px-16" href="/">Go Home</Button>
       </div>
     </div>
 
