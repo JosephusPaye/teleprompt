@@ -18,7 +18,7 @@
       <div class="font-semibold uppercase tracking-wider text-xl">
         Recent presentations
       </div>
-      <div class="grid grid-cols-2 gap-4 mt-4">
+      <div class="grid grid-cols-2 gap-4 mt-5">
         <Button
           :href="`/${presentation.code}`"
           v-for="presentation in presentations"

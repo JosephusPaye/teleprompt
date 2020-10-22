@@ -4,7 +4,7 @@
       class="flex justify-between items-center border-b border-gray-800 px-8 py-3 fixed w-full bg-gray-900 z-10"
       style="height: 72px"
     >
-      <Button @click="$emit('navigate', 'start')" class="py-1">
+      <Button href="/" class="py-1">
         <svg
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 24 24"

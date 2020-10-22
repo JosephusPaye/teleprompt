@@ -108,10 +108,10 @@ export default {
     goBack() {
       if (this.unsaved) {
         if (confirm('Discard changes?')) {
-          this.$emit('navigate', 'start');
+          window.location.href = '/';
         }
       } else {
-        this.$emit('navigate', 'start');
+        window.location.href = '/';
       }
     },
 
