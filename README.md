@@ -19,7 +19,7 @@ This project is part of [#CreateWeekly](https://twitter.com/JosephusPaye/status/
 - Add the site to your homescreen. If you're using an iPad, you can do it as follows:
   - [Open the site](https://teleprompt.webpluslabs.com) in Safari
   - Tap the share icon in the toolbar at the top
-  - Scroll down the menu, and tab "Add to Homescreen" ([view a screenshot](./add-to-homescreen.jpg))
+  - Scroll down the menu, and tab "Add to Homescreen" ([view a screenshot](./add-to-homescreen.jpg?raw=true))
 
 ## How to use
 
