@@ -45,8 +45,11 @@
             />
           </div>
         </div>
-        <div class="flex flex-shrink-0 ml-6">
-          <Button :disabled="saving" @click="save">{{
+        <div class="flex items-center flex-shrink-0 ml-6">
+          <span class="font-mono text-2xl text-gray-300 tracking-wide">{{
+            presentation.code
+          }}</span>
+          <Button :disabled="saving" @click="save" class="ml-3">{{
             saving ? 'Saving...' : '💾 Save'
           }}</Button>
           <Button class="ml-2" @click="goToPresent">▶ Present</Button>

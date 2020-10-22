@@ -14,9 +14,15 @@ Route::get('/', function () {
 });
 
 Route::get('/new', function () {
+    $code = strtoupper(Str::random(8));
+
+    while (Presentation::where('code', $code)->exists()) {
+        $code = strtoupper(Str::random(8));
+    }
+
     $presentation = Presentation::create([
         'title' => 'Untitled Presentation',
-        'code' => Str::random(8),
+        'code' => $code,
         'content' => '',
     ]);
 
