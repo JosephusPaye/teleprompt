@@ -68,6 +68,7 @@
 <script>
 import httpie from 'httpie/dist/httpie.js';
 
+import * as storage from './storage';
 import Button from './Button.vue';
 import ToggleButton from './ToggleButton.vue';
 import PresentationEditor from './PresentationEditor.vue';
@@ -94,6 +95,12 @@ export default {
     };
   },
 
+  mounted() {
+    if (this.presentation) {
+      storage.savePresentation(this.presentation);
+    }
+  },
+
   methods: {
     goBack() {
       if (this.unsaved) {
@@ -117,6 +124,9 @@ export default {
 
     save() {
       this.saving = true;
+
+      storage.savePresentation(this.presentation);
+
       return httpie
         .patch(`/${this.code}`, {
           body: {
@@ -158,6 +168,8 @@ export default {
             },
           })
           .then(() => {
+            storage.deletePresentation(this.code);
+
             this.deleting = false;
             alert('✅ Presentation deleted');
             window.location.href = '/';

@@ -2,6 +2,7 @@
 
 use App\Models\Presentation;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Str;
 
 Route::get('/', function () {
     return view('app', [
@@ -10,6 +11,16 @@ Route::get('/', function () {
             'csrfToken' => csrf_token(),
         ]
     ]);
+});
+
+Route::get('/new', function () {
+    $presentation = Presentation::create([
+        'title' => 'Untitled Presentation',
+        'code' => Str::random(8),
+        'content' => '',
+    ]);
+
+    return redirect('/' . $presentation->code);
 });
 
 Route::get('/{code}', function ($code) {

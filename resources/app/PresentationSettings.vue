@@ -33,6 +33,8 @@
 <script>
 import debounce from 'debounce';
 import httpie from 'httpie/dist/httpie.js';
+
+import * as storage from './storage';
 import ToggleButton from './ToggleButton.vue';
 
 export default {
@@ -61,6 +63,8 @@ export default {
 
   methods: {
     saveSettings() {
+      storage.saveSettings(this.presentation.code, this.presentation.settings);
+
       httpie
         .patch(`/${this.presentation.code}/settings`, {
           body: {

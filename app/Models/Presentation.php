@@ -54,6 +54,6 @@ class Presentation extends Model
      * Get the settings attribute.
      */
     public function getSettingsAttribute($value) {
-        return is_array($value) ? $value : json_decode($value ?? []);
+        return is_string($value) ? json_decode($value) : $value;
     }
 }
