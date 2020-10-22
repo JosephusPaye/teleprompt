@@ -65,18 +65,17 @@ export default {
     },
 
     previous() {
-      this.$el.scrollTo({
-        top: Math.max(0, this.$el.scrollTop - this.scrollFactor),
+      this.$el.scrollBy({
+        left: 0,
+        top: -this.scrollFactor,
         behavior: 'smooth',
       });
     },
 
     next() {
-      this.$el.scrollTo({
-        top: Math.min(
-          this.$el.scrollHeight,
-          this.$el.scrollTop + this.scrollFactor
-        ),
+      this.$el.scrollBy({
+        left: 0,
+        top: this.scrollFactor,
         behavior: 'smooth',
       });
     },
