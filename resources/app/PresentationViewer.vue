@@ -2,7 +2,7 @@
   <div class="presentation-viewer w-screen" ref="scroller">
     <div
       class="p-8 max-w-6xl mx-auto prose-xl mirrorable"
-      :class="{ 'mirror-x': mirrorX, 'mirror-y': mirrorY }"
+      :class="{ 'mirror-x': mirrorX, 'mirror-y': mirrorY, 'pt-64': mirrorX }"
       :style="{
         fontSize: `${1.25 * textSize}rem`,
         lineHeight: textSize >= 3 ? '1.5' : '1.8',
@@ -45,8 +45,15 @@ export default {
     },
   },
 
+  watch: {
+    mirrorX() {
+      this.scrollToStart();
+    },
+  },
+
   mounted() {
     document.addEventListener('keydown', this.onKeydown);
+    this.scrollToStart({ smooth: false });
   },
 
   beforeDestroy() {
@@ -67,7 +74,7 @@ export default {
     previous() {
       this.$el.scrollBy({
         left: 0,
-        top: -this.scrollFactor,
+        top: this.scrollFactor * (this.mirrorX ? 1 : -1),
         behavior: 'smooth',
       });
     },
@@ -75,9 +82,25 @@ export default {
     next() {
       this.$el.scrollBy({
         left: 0,
-        top: this.scrollFactor,
+        top: this.scrollFactor * (this.mirrorX ? -1 : 1),
         behavior: 'smooth',
       });
+    },
+
+    scrollToStart(options = { smooth: true }) {
+      if (this.mirrorX) {
+        this.$el.scrollTo({
+          left: 0,
+          top: this.$el.scrollHeight,
+          behavior: options.smooth ? 'smooth' : undefined,
+        });
+      } else {
+        this.$el.scrollTo({
+          left: 0,
+          top: 0,
+          behavior: options.smooth ? 'smooth' : undefined,
+        });
+      }
     },
   },
 };
