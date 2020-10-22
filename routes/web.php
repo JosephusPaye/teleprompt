@@ -36,10 +36,13 @@ Route::patch('/{code}', function ($code) {
             ], 404);
     }
 
-    // TODO: validate title and content are present
-    // TODO: sanitize content
-    $presentation->title = request()->input('title');
-    $presentation->content = request()->input('content');
+    $validatedData = request()->validate([
+        'title' => 'required|string',
+        'content' => 'string',
+    ]);
+
+    $presentation->title = $validatedData['title'];
+    $presentation->content = $validatedData['content'];
     $presentation->save();
 
     return response()->json([

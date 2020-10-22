@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Stevebauman\Purify\Facades\Purify;
 
 class Presentation extends Model
 {
@@ -41,6 +42,10 @@ class Presentation extends Model
                 ]);
                 $presentation->save();
             }
+        });
+
+        static::saving(function ($presentation) {
+            $presentation->content = Purify::clean($presentation->content);
         });
     }
 

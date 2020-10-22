@@ -17,11 +17,19 @@
         style="height: 72px"
       >
         <div class="text-xl font-semibold flex-grow mr-16">
-          📃
-          <input
-            v-model="presentation.title"
-            class="bg-transparent leading-none focus:outline-none w-2/3"
-          />
+          <div
+            class="w-2/3 py-2 rounded px-3 -ml-3 flex hover:bg-gray-800 transition duration-200"
+            :class="{ 'bg-gray-800': titleFocused }"
+          >
+            📃
+            <input
+              placeholder="Untitled presentation"
+              v-model="presentation.title"
+              @focus="titleFocused = true"
+              @blur="titleFocused = false"
+              class="bg-transparent leading-none focus:outline-none w-full ml-2"
+            />
+          </div>
         </div>
         <div class="flex flex-shrink-0 ml-6">
           <Button :disabled="saving" @click="save">{{
@@ -63,6 +71,7 @@ export default {
     return {
       saving: false,
       deleting: false,
+      titleFocused: false,
     };
   },
 
@@ -72,7 +81,10 @@ export default {
       httpie
         .patch(`/${this.code}`, {
           body: {
-            title: this.presentation.title,
+            title:
+              this.presentation.title.trim().length > 0
+                ? this.presentation.title
+                : 'Untitled presentation',
             content: this.presentation.content,
           },
           headers: {
@@ -80,15 +92,17 @@ export default {
             'X-Csrf-Token': window.backendData.csrfToken,
           },
         })
-        .then(() => {
+        .then(({ data }) => {
           this.saving = false;
+          this.presentation.title = data.presentation.title;
+          this.presentation.content = data.presentation.content;
           // TODO: Update save button to say 'Saved!', see the Copy button in the Noodle editor
-          alert('Saved');
+          alert('✅ Presentation saved');
         })
         .catch((err) => {
           this.saving = false;
           console.log('unable to save', err);
-          alert('Unable to save presentation. Try again later.');
+          alert('⚠ Unable to save presentation. Try again later.');
         });
     },
 
@@ -105,13 +119,13 @@ export default {
           })
           .then(() => {
             this.deleting = false;
-            alert('Presentation deleted');
+            alert('✅ Presentation deleted');
             window.location.href = '/';
           })
           .catch((err) => {
             console.log('unable to delete', err);
             this.saving = false;
-            alert('Unable to delete presentation. Refresh and try again.');
+            alert('⚠ Unable to delete presentation. Refresh and try again.');
           });
       }
     },

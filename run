@@ -11,6 +11,11 @@ else
     exit 1
 fi
 
+# Create the storage/purify cache directory if it doesn't exist
+if [ ! -d storage/purify ]; then
+    mkdir storage/purify
+fi
+
 # If there are arguments...
 if [ $# -gt 0 ]; then
     # Build the services on `./run build`

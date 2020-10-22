@@ -2,6 +2,7 @@
   <div class="presentation-editor w-screen">
     <Editor
       v-model="presentation.content"
+      placeholder="Write something awesome..."
       contentClass="presentation-content prose-xl mirrorable"
     />
   </div>
