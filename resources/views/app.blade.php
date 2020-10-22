@@ -12,7 +12,7 @@
         name="og:description"
         content="A fast and simple teleprompter you can control with a presentation remote."
     />
-    <meta name="og:url" content="https://teleprompt.webpluslabs.com/" />
+    <meta name="og:url" content=" {{ url('/') }}" />
     <meta name="og:title" content="Teleprompt" />
     <link rel="shortcut icon" href="/favicon.ico">
     <link

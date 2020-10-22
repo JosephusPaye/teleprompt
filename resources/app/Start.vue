@@ -56,7 +56,6 @@ export default {
   data() {
     return {
       presentations: getPresentations().map((p) => {
-        console.log(p);
         return {
           code: p.code,
           title: p.title,
