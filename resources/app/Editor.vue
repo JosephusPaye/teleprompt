@@ -107,7 +107,7 @@ trix-toolbar * {
 }
 
 trix-toolbar {
-  @apply border-b border-gray-800 fixed w-full;
+  @apply border-b border-gray-800 bg-gray-900 fixed z-20 w-full;
 
   .trix-button-row {
     @apply px-8 bg-gray-900;
