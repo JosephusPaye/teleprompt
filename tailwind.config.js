@@ -6,4 +6,9 @@ module.exports = {
     purgeLayersByDefault: true,
   },
   plugins: [typography],
+  purge: [
+    './resources/**/*.vue',
+    './resources/**/*.blade.php',
+    './resources/**/*.js',
+  ],
 };
