@@ -16,17 +16,31 @@
         class="flex justify-between items-center border-b border-gray-800 px-8 py-3 fixed w-full bg-gray-900 z-10"
         style="height: 72px"
       >
+        <Button @click="goBack" class="py-1">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill="white"
+            width="24px"
+            height="24px"
+            class="-mr-2"
+          >
+            <path d="M0 0h24v24H0z" fill="none" />
+            <path d="M11.67 3.87L9.9 2.1 0 12l9.9 9.9 1.77-1.77L3.54 12z" />
+          </svg>
+        </Button>
+
         <div class="text-xl font-semibold flex-grow mr-16">
           <div
-            class="w-2/3 py-2 rounded px-3 -ml-3 flex hover:bg-gray-800 transition duration-200"
+            class="w-2/3 py-3 px-3 rounded ml-1 h-12 flex hover:bg-gray-800 transition duration-200"
             :class="{ 'bg-gray-800': titleFocused }"
           >
-            📃
             <input
               placeholder="Untitled presentation"
               v-model="presentation.title"
               @focus="titleFocused = true"
               @blur="titleFocused = false"
+              @change="unsaved = true"
               class="bg-transparent leading-none font-semibold focus:outline-none w-full ml-2"
             />
           </div>
@@ -35,16 +49,17 @@
           <Button :disabled="saving" @click="save">{{
             saving ? 'Saving...' : '💾 Save'
           }}</Button>
-          <Button class="ml-2" @click="$emit('navigate', 'present')"
-            >▶ Present</Button
-          >
+          <Button class="ml-2" @click="goToPresent">▶ Present</Button>
           <Button class="ml-2" :disabled="deleting" @click="confirmDelete">{{
             deleting ? 'Deleting...' : '✖ Delete'
           }}</Button>
         </div>
       </div>
       <div class="flex-grow flex" style="margin-top: 72px">
-        <PresentationEditor :presentation="presentation" />
+        <PresentationEditor
+          :presentation="presentation"
+          @change="unsaved = true"
+        />
       </div>
     </div>
   </div>
@@ -75,13 +90,34 @@ export default {
       saving: false,
       deleting: false,
       titleFocused: false,
+      unsaved: false,
     };
   },
 
   methods: {
+    goBack() {
+      if (this.unsaved) {
+        if (confirm('Discard changes?')) {
+          this.$emit('navigate', 'start');
+        }
+      } else {
+        this.$emit('navigate', 'start');
+      }
+    },
+
+    goToPresent() {
+      if (this.unsaved) {
+        if (confirm('Discard changes?')) {
+          this.$emit('navigate', 'present');
+        }
+      } else {
+        this.$emit('navigate', 'present');
+      }
+    },
+
     save() {
       this.saving = true;
-      httpie
+      return httpie
         .patch(`/${this.code}`, {
           body: {
             title:
@@ -97,6 +133,7 @@ export default {
         })
         .then(({ data }) => {
           this.saving = false;
+          this.unsaved = false;
           this.presentation.title = data.presentation.title;
           this.presentation.content = data.presentation.content;
           // TODO: Update save button to say 'Saved!', see the Copy button in the Noodle editor

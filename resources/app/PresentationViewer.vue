@@ -73,7 +73,10 @@ export default {
 
     next() {
       this.$el.scrollTo({
-        top: Math.min(this.$el.scrollHeight, this.$el.scrollTop + this.scrollFactor),
+        top: Math.min(
+          this.$el.scrollHeight,
+          this.$el.scrollTop + this.scrollFactor
+        ),
         behavior: 'smooth',
       });
     },

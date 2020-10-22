@@ -4,11 +4,24 @@
       class="flex justify-between items-center border-b border-gray-800 px-8 py-3 fixed w-full bg-gray-900 z-10"
       style="height: 72px"
     >
-      <div class="text-xl font-semibold flex-grow mr-16">
-        <div class="w-2/3 py-2 truncate">
-          📃 <span class="ml-1">{{ presentation.title }}</span>
-        </div>
+      <Button @click="$emit('navigate', 'start')" class="py-1">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 24 24"
+          fill="white"
+          width="24px"
+          height="24px"
+          class="-mr-2"
+        >
+          <path d="M0 0h24v24H0z" fill="none" />
+          <path d="M11.67 3.87L9.9 2.1 0 12l9.9 9.9 1.77-1.77L3.54 12z" />
+        </svg>
+      </Button>
+
+      <div class="text-xl font-semibold flex-grow ml-6 mr-16">
+        <div class="w-2/3 truncate">{{ presentation.title }}</div>
       </div>
+
       <div class="flex flex-shrink-0 ml-6">
         <Button @click="$emit('navigate', 'presentation')">✒ Edit</Button>
         <ToggleButton class="ml-2" :value.sync="showSettings"
