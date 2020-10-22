@@ -1,6 +1,6 @@
 # Teleprompt
 
-<img src="./teleprompt.png" alt="Teleprompt icon" width="100" height="100" align="left" style="margin-right: 24px" />
+<img src="./teleprompt.png" alt="Teleprompt icon" width="112" height="112" align="left" style="margin-right: 24px" />
 
 Teleprompt is a fast and simple teleprompter you can control with a presentation remote. Designed for use on a tablet in a teleprompter like the [Glide TMP 100](https://glidegear.net/collections/teleprompters/products/glide-gear-tmp-100-ipad-smartphone-video-teleprompter).
 
