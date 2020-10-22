@@ -14,11 +14,7 @@
     />
     <meta name="og:url" content="https://teleprompt.webpluslabs.com/" />
     <meta name="og:title" content="Teleprompt" />
-    <link
-        id="emojicon"
-        rel="shortcut icon"
-        href="/favicon.ico"
-    />
+    <link rel="shortcut icon" href="/favicon.ico">
     <link
         rel="apple-touch-icon"
         sizes="194x194"
