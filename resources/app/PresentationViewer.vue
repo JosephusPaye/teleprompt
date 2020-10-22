@@ -1,5 +1,5 @@
 <template>
-  <div class="presentation-viewer w-screen">
+  <div class="presentation-viewer w-screen" ref="scroller">
     <div
       class="p-8 max-w-6xl mx-auto prose-xl mirrorable"
       :class="{ 'mirror-x': mirrorX, 'mirror-y': mirrorY }"
@@ -38,6 +38,44 @@ export default {
 
     textSize() {
       return this.presentation ? this.presentation.settings.textSize : 1;
+    },
+
+    scrollFactor() {
+      return this.textSize * 100;
+    },
+  },
+
+  mounted() {
+    document.addEventListener('keydown', this.onKeydown);
+  },
+
+  beforeDestroy() {
+    document.removeEventListener('keydown', this.onKeydown);
+  },
+
+  methods: {
+    onKeydown(e) {
+      if (e.key === 'ArrowUp' || e.key === 'ArrowLeft') {
+        e.preventDefault();
+        this.previous();
+      } else if (e.key === 'ArrowDown' || e.key === 'ArrowRight') {
+        e.preventDefault();
+        this.next();
+      }
+    },
+
+    previous() {
+      this.$el.scrollTo({
+        top: Math.max(0, this.$el.scrollTop - this.scrollFactor),
+        behavior: 'smooth',
+      });
+    },
+
+    next() {
+      this.$el.scrollTo({
+        top: Math.min(this.$el.scrollHeight, this.$el.scrollTop + this.scrollFactor),
+        behavior: 'smooth',
+      });
     },
   },
 };
