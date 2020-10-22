@@ -29,6 +29,7 @@ class PresentationFactory extends Factory
             'settings' => json_encode([
                 'mirrorVertically' => $this->faker->boolean(),
                 'mirrorHorizontally' => $this->faker->boolean(),
+                'textSize' => 1,
             ])
         ];
     }

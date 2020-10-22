@@ -39,6 +39,7 @@ class Presentation extends Model
                 $presentation->settings = json_encode([
                     'mirrorVertically' => false,
                     'mirrorHorizontally' => false,
+                    'textSize' => 1,
                 ]);
                 $presentation->save();
             }
@@ -53,6 +54,6 @@ class Presentation extends Model
      * Get the settings attribute.
      */
     public function getSettingsAttribute($value) {
-        return json_decode($value ?? []);
+        return is_array($value) ? $value : json_decode($value ?? []);
     }
 }

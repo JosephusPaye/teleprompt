@@ -12,12 +12,19 @@
       :presentation="backendData.presentation"
       :code="backendData.code"
     />
+    <Present
+      v-else-if="view === 'present'"
+      @navigate="onNavigate"
+      class="h-screen w-screen"
+      :presentation="backendData.presentation"
+    />
   </div>
 </template>
 
 <script>
 import Start from './Start.vue';
 import Presentation from './Presentation.vue';
+import Present from './Present.vue';
 
 export default {
   name: 'App',
@@ -25,6 +32,7 @@ export default {
   components: {
     Start,
     Presentation,
+    Present,
   },
 
   props: {
@@ -35,10 +43,6 @@ export default {
     return {
       view: this.backendData.view || 'start',
     };
-  },
-
-  mounted() {
-    console.log(this.backendData);
   },
 
   methods: {

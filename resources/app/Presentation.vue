@@ -27,7 +27,7 @@
               v-model="presentation.title"
               @focus="titleFocused = true"
               @blur="titleFocused = false"
-              class="bg-transparent leading-none focus:outline-none w-full ml-2"
+              class="bg-transparent leading-none font-semibold focus:outline-none w-full ml-2"
             />
           </div>
         </div>
@@ -35,6 +35,9 @@
           <Button :disabled="saving" @click="save">{{
             saving ? 'Saving...' : '💾 Save'
           }}</Button>
+          <Button class="ml-2" @click="$emit('navigate', 'present')"
+            >▶ Present</Button
+          >
           <Button class="ml-2" :disabled="deleting" @click="confirmDelete">{{
             deleting ? 'Deleting...' : '✖ Delete'
           }}</Button>

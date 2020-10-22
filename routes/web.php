@@ -70,7 +70,7 @@ Route::delete('/{code}', function ($code) {
     ], 200);
 });
 
-Route::post('/{code}/settings', function ($code) {
+Route::patch('/{code}/settings', function ($code) {
     $presentation = Presentation::where('code', $code)->first();
 
     if (!$presentation) {
@@ -81,10 +81,12 @@ Route::post('/{code}/settings', function ($code) {
             ], 404);
     }
 
-    $presentation->settings = request()->input('settings');
-    $presentation->save();
+    $validatedData = request()->validate([
+        'settings' => 'required|array',
+    ]);
 
-    $presentation->load('slides');
+    $presentation->settings = $validatedData['settings'];
+    $presentation->save();
 
     return response()->json([
         'status' => 'OK',
