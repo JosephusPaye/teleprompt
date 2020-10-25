@@ -13,34 +13,53 @@
 
     <div
       v-if="presentations.length > 0"
-      class="border border-gray-800 mt-12 w-full max-w-2xl rounded p-8"
+      class="border border-gray-800 mt-16 w-full max-w-2xl rounded p-8"
     >
-      <div class="font-semibold uppercase tracking-wider text-xl">
-        Recent presentations
+      <div class="block -mt-12">
+        <span class="bg-gray-900 text-gray-400 px-2 tracking-wider text-lg"
+          >Recent presentations</span
+        >
       </div>
       <div class="grid grid-cols-2 gap-4 mt-5">
-        <Button
-          :href="`/${presentation.code}`"
+        <div
           v-for="presentation in presentations"
           :key="presentation.code"
-          class="block truncate rounded-full justify-start"
-          >{{ presentation.title }}</Button
+          class="flex rounded-full"
         >
+          <Button
+            :href="`/${presentation.code}`"
+            class="rounded-l-full flex-grow truncate pr-2 flex"
+            >{{ presentation.title }} <span class="ml-auto"></span
+          ></Button>
+          <Button
+            class="rounded-r-full pl-3 pr-4"
+            title="Delete"
+            @click="confirmDelete(presentation)"
+            >❌</Button
+          >
+        </div>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import Button from './Button.vue';
+import httpie from 'httpie/dist/httpie.js';
 
-import { getPresentations } from './storage';
+import Button from './Button.vue';
+import { getPresentations, deletePresentation } from './storage';
 
 export default {
   name: 'Start',
 
   components: {
     Button,
+  },
+
+  data() {
+    return {
+      presentations: getPresentations(),
+    };
   },
 
   methods: {
@@ -51,17 +70,37 @@ export default {
         window.location.href = '/' + code;
       }
     },
-  },
 
-  data() {
-    return {
-      presentations: getPresentations().map((p) => {
-        return {
-          code: p.code,
-          title: p.title,
-        };
-      }),
-    };
+    confirmDelete(presentation) {
+      if (confirm(`Are you sure you want to delete "${presentation.title}"?`)) {
+        httpie
+          .del(`/${presentation.code}`, {
+            headers: {
+              'X-Requested-With': 'XMLHttpRequest',
+              'X-Csrf-Token': window.backendData.csrfToken,
+            },
+          })
+          .then(() => {
+            deletePresentation(presentation.code);
+            alert('✅ Presentation deleted');
+
+            this.presentations = getPresentations();
+          })
+          .catch((err) => {
+            console.log('unable to delete from server', err);
+
+            // Delete the local presentation if the server request failed
+            deletePresentation(presentation.code);
+            alert('✅ Presentation deleted');
+
+            this.presentations = getPresentations();
+          })
+          .catch((err) => {
+            console.log('unable to delete', err);
+            alert('⚠ Unable to delete presentation. Refresh and try again.');
+          });
+      }
+    },
   },
 };
 </script>
