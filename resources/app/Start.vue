@@ -40,6 +40,34 @@
         </div>
       </div>
     </div>
+
+    <div class="mx-auto">
+      <div class="text-center mt-24 pt-4 text-gray-700 text-sm">
+        Created by
+        <a
+          class="underline hover:text-gray-500 focus:text-gray-400"
+          href="https://twitter.com/JosephusPaye"
+          target="_blank"
+          rel="noopener"
+          >Josephus Paye II</a
+        >
+        for
+        <a
+          class="underline hover:text-gray-500 focus:text-gray-400"
+          href="https://twitter.com/JosephusPaye/status/1214853295023411200"
+          target="_blank"
+          rel="noopener"
+          >#CreateWeekly</a
+        >. View on
+        <a
+          class="underline hover:text-gray-500 focus:text-gray-400"
+          href="https://github.com/JosephusPaye/teleprompt"
+          target="_blank"
+          rel="noopener"
+          >Github</a
+        >.
+      </div>
+    </div>
   </div>
 </template>
 
