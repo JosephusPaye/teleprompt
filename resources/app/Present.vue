@@ -1,10 +1,10 @@
 <template>
   <div class="flex flex-col overflow-x-hidden overflow-y-hidden">
     <div
-      class="flex justify-between items-center border-b border-gray-800 px-8 py-3 fixed w-full bg-gray-900 z-10"
+      class="flex justify-between items-center border-b border-gray-800 px-8 py-3 fixed w-full bg-gray-900 z-20"
       style="height: 72px"
     >
-      <Button href="/" class="py-1">
+      <Button @click="$emit('navigate', 'presentation')" class="py-1">
         <svg
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 24 24"

@@ -13,7 +13,7 @@
 
     <div v-else class="h-screen w-screen flex flex-col overflow-x-hidden">
       <div
-        class="flex justify-between items-center border-b border-gray-800 px-8 py-3 fixed w-full bg-gray-900 z-10"
+        class="flex justify-between items-center border-b border-gray-800 px-8 py-3 fixed w-full bg-gray-900 z-20"
         style="height: 72px"
       >
         <Button @click="goBack" class="py-1">
@@ -54,7 +54,7 @@
           }}</Button>
           <Button class="ml-2" @click="goToPresent">▶ Present</Button>
           <Button class="ml-2" :disabled="deleting" @click="confirmDelete">{{
-            deleting ? 'Deleting...' : '✖ Delete'
+            deleting ? 'Deleting...' : '❌ Delete'
           }}</Button>
         </div>
       </div>
@@ -71,7 +71,8 @@
 <script>
 import httpie from 'httpie/dist/httpie.js';
 
-import * as storage from './storage';
+import { deletePresentation, savePresentation } from './storage';
+
 import Button from './Button.vue';
 import ToggleButton from './ToggleButton.vue';
 import PresentationEditor from './PresentationEditor.vue';
@@ -100,7 +101,7 @@ export default {
 
   mounted() {
     if (this.presentation) {
-      storage.savePresentation(this.presentation);
+      savePresentation(this.presentation);
     }
   },
 
@@ -116,19 +117,13 @@ export default {
     },
 
     goToPresent() {
-      if (this.unsaved) {
-        if (confirm('Discard changes?')) {
-          this.$emit('navigate', 'present');
-        }
-      } else {
-        this.$emit('navigate', 'present');
-      }
+      this.$emit('navigate', 'present');
     },
 
     save() {
       this.saving = true;
 
-      storage.savePresentation(this.presentation);
+      savePresentation(this.presentation);
 
       return httpie
         .patch(`/${this.code}`, {
@@ -137,7 +132,7 @@ export default {
               this.presentation.title.trim().length > 0
                 ? this.presentation.title
                 : 'Untitled presentation',
-            content: this.presentation.content,
+            content: this.presentation.content || '',
           },
           headers: {
             'X-Requested-With': 'XMLHttpRequest',
@@ -149,8 +144,6 @@ export default {
           this.unsaved = false;
           this.presentation.title = data.presentation.title;
           this.presentation.content = data.presentation.content;
-          // TODO: Update save button to say 'Saved!', see the Copy button in the Noodle editor
-          alert('✅ Presentation saved');
         })
         .catch((err) => {
           this.saving = false;
@@ -171,7 +164,7 @@ export default {
             },
           })
           .then(() => {
-            storage.deletePresentation(this.code);
+            deletePresentation(this.code);
 
             this.deleting = false;
             alert('✅ Presentation deleted');
